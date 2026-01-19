@@ -10,7 +10,7 @@ public class SmartBalanceChecker {
             if (balance < 0) {
                 System.out.print("Error: Invalid balance entered.");
             } else if (balance < 1000) {
-                System.out.print("Alert! Your balance is lo.");
+                System.out.print("Alert! Your balance is low.");
             } else {
                 System.out.print("Your balance is sufficient.");
             }
