@@ -37,7 +37,7 @@ jobs:
           expected-output: "Alert! Your balance is low."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Sample 2
         id: t2
@@ -50,7 +50,7 @@ jobs:
           expected-output: "Your balance is sufficient."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Sample 3
         id: t3
@@ -63,7 +63,7 @@ jobs:
           expected-output: "Your balance is sufficient."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       # ---------- HIDDEN TEST CASES ----------
 
@@ -78,7 +78,7 @@ jobs:
           expected-output: "Alert! Your balance is low."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Hidden 2
         id: t5
@@ -91,7 +91,7 @@ jobs:
           expected-output: "Alert! Your balance is low."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Hidden 3
         id: t6
@@ -104,7 +104,7 @@ jobs:
           expected-output: "Alert! Your balance is low."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Hidden 4
         id: t7
@@ -117,7 +117,7 @@ jobs:
           expected-output: "Error: Invalid balance entered."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Hidden 5
         id: t8
@@ -130,7 +130,7 @@ jobs:
           expected-output: "Your balance is sufficient."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Hidden 6
         id: t9
@@ -143,7 +143,7 @@ jobs:
           expected-output: "Your balance is sufficient."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       - name: Hidden 7
         id: t10
@@ -156,7 +156,7 @@ jobs:
           expected-output: "Error: Please enter a valid number."
           comparison-method: exact
           timeout: 10
-          max-score: 5
+          max-score: 10
 
       # ---------- AUTOGRADING REPORT ----------
 
