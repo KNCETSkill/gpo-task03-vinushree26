@@ -1,0 +1,179 @@
+name: Autograding Tests
+
+on:
+  push:
+  repository_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  autograde:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # ---------- SAMPLE TEST CASES ----------
+
+      - name: Sample 1
+        id: t1
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Balance Low
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "175.50"
+          expected-output: "Alert! Your balance is low."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Sample 2
+        id: t2
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Exact Threshold
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "1000.00"
+          expected-output: "Your balance is sufficient."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Sample 3
+        id: t3
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Above Threshold
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "1150.25"
+          expected-output: "Your balance is sufficient."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      # ---------- HIDDEN TEST CASES ----------
+
+      - name: Hidden 1
+        id: t4
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Just Below Threshold
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "99.99"
+          expected-output: "Alert! Your balance is low."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Hidden 2
+        id: t5
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Minimum Non Zero
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "0.01"
+          expected-output: "Alert! Your balance is low."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Hidden 3
+        id: t6
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Zero Balance
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "0.00"
+          expected-output: "Alert! Your balance is low."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Hidden 4
+        id: t7
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Negative Balance
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "-50.00"
+          expected-output: "Error: Invalid balance entered."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Hidden 5
+        id: t8
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Large Amount
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "9999.99"
+          expected-output: "Your balance is sufficient."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Hidden 6
+        id: t9
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Just Above Threshold
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "1000.01"
+          expected-output: "Your balance is sufficient."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      - name: Hidden 7
+        id: t10
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: Non Numeric Input
+          setup-command: javac src/SmartBalanceChecker.java
+          command: java -cp src SmartBalanceChecker
+          input: "abc"
+          expected-output: "Error: Please enter a valid number."
+          comparison-method: exact
+          timeout: 10
+          max-score: 5
+
+      # ---------- AUTOGRADING REPORT ----------
+
+      - name: Autograding Report
+        if: success()
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          T1_RESULTS: ${{ steps.t1.outputs.result }}
+          T2_RESULTS: ${{ steps.t2.outputs.result }}
+          T3_RESULTS: ${{ steps.t3.outputs.result }}
+          T4_RESULTS: ${{ steps.t4.outputs.result }}
+          T5_RESULTS: ${{ steps.t5.outputs.result }}
+          T6_RESULTS: ${{ steps.t6.outputs.result }}
+          T7_RESULTS: ${{ steps.t7.outputs.result }}
+          T8_RESULTS: ${{ steps.t8.outputs.result }}
+          T9_RESULTS: ${{ steps.t9.outputs.result }}
+          T10_RESULTS: ${{ steps.t10.outputs.result }}
+        with:
+          runners: t1,t2,t3,t4,t5,t6,t7,t8,t9,t10
+          fail-on-error: true
